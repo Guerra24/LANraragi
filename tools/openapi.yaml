@@ -446,9 +446,7 @@ paths:
           description: ID of the archive to use the Plugin on. This is only mandatory for metadata plugins.
           required: false
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
         - name: plugin
           in: query
           description: Namespace of the plugin to use.
@@ -516,9 +514,7 @@ paths:
           description: ID of the archive to use the Plugin on. This is only mandatory for metadata plugins.
           required: false
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
         - name: priority
           in: query
           required: false
@@ -1348,9 +1344,7 @@ paths:
           required: false
           description: Category ID to add the downloaded URL to.
           schema:
-            type: string
-            minLength: 14
-            maxLength: 14
+            $ref: '#/components/schemas/CategoryId'
       requestBody:
         required: false
         content:
@@ -1365,10 +1359,8 @@ paths:
                   type: string
                   format: uri
                 catid:
-                  type: string
+                  $ref: '#/components/schemas/CategoryId'
                   description: Category ID to add the downloaded URL to.
-                  minLength: 14
-                  maxLength: 14
       responses:
         '200':
           description: Enqueued job
@@ -1484,9 +1476,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: string
-                  minLength: 40
-                  maxLength: 40
+                  $ref: '#/components/schemas/ArchiveId'
               example:
                 - d1858d5dc36925aa66be072a97817650d39de166
                 - c3458d5dc36925da93be072a97817650d39de166
@@ -1524,10 +1514,8 @@ paths:
                   description: SHA1 checksum of the archive for in-transit validation.
                   pattern: ^[a-fA-F0-9]{40}$
                 category_id:
-                  type: string
                   description: Category ID you'd want the archive to be added to.
-                  minLength: 14
-                  maxLength: 14
+                  $ref: '#/components/schemas/CategoryId'
                 tags:
                   type: string
                   description: >-
@@ -1561,9 +1549,7 @@ paths:
                     enum:
                       - 1
                   id:
-                    type: string
-                    minLength: 40
-                    maxLength: 40
+                    $ref: '#/components/schemas/ArchiveId'
                     description: ID of the uploaded archive
         '400':
           description: Bad request
@@ -1597,9 +1583,7 @@ paths:
                     type: string
                     description: Error message indicating the archive already exists
                   id:
-                    type: string
-                    minLength: 40
-                    maxLength: 40
+                    $ref: '#/components/schemas/ArchiveId'
                     description: ID of the existing archive  
                 example:
                   operation: upload
@@ -1652,9 +1636,7 @@ paths:
           required: true
           description: ID of the Archive to process.
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
       responses:
         '200':
           description: Archive metadata
@@ -1685,9 +1667,7 @@ paths:
           required: true
           description: ID of the Archive to process.
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
       responses:
         '200':
           description: Archive deleted response
@@ -1702,9 +1682,7 @@ paths:
                     enum:
                       - delete_archive
                   id:
-                    type: string
-                    minLength: 40
-                    maxLength: 40
+                    $ref: '#/components/schemas/ArchiveId'
                     description: ID of the archive
                   filename:
                     type: string
@@ -1747,9 +1725,7 @@ paths:
           required: true
           description: ID of the Archive to process.
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
       responses:
         '200':
           description: Archive metadata
@@ -1781,9 +1757,7 @@ paths:
           required: true
           description: ID of the Archive to process.
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
         - name: title
           in: query
           required: false
@@ -1844,9 +1818,7 @@ paths:
           required: true
           description: ID of the archive to process
           schema:
-            type: string
-            maxLength: 40
-            minLength: 40
+            $ref: '#/components/schemas/ArchiveId'
         - name: no_fallback
           in: query
           required: false
@@ -1910,9 +1882,7 @@ paths:
           required: true
           description: ID of the Archive to process.
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
         - name: page
           in: query
           required: false
@@ -1968,12 +1938,8 @@ paths:
           schema:
             type: string
             oneOf:
-              - minLength: 40
-                maxLength: 40
-                pattern: "^[0-9a-f]{40}$"
-              - minLength: 15
-                maxLength: 15
-                pattern: "^TANK_[0-9]{10}$"
+              - $ref: '#/components/schemas/ArchiveId'
+              - $ref: '#/components/schemas/TankoubonId'
       responses:
         '200':
           description: Archive categories
@@ -2037,9 +2003,7 @@ paths:
           required: true
           description: ID of the Archive to process.
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
       responses:
         '200':
           description: Archive tankoubons
@@ -2052,9 +2016,7 @@ paths:
                     type: array
                     description: Array of tankoubon IDs
                     items:
-                      type: string
-                      minLength: 15
-                      maxLength: 15
+                      $ref: '#/components/schemas/TankoubonId'
                   operation:
                     type: string
                     description: Name of the operation
@@ -2096,9 +2058,7 @@ paths:
           required: true
           description: ID of the Archive to process.
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
         - name: page
           in: query
           required: true
@@ -2150,9 +2110,7 @@ paths:
           required: true
           description: ID of the Archive to process.
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
         - name: page
           in: query
           required: true
@@ -2197,9 +2155,7 @@ paths:
           required: true
           description: ID of the Archive to download.
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
       responses:
         '200':
           description: Archive file
@@ -2236,9 +2192,7 @@ paths:
           required: true
           description: ID of the Archive to process.
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
         - name: force
           in: query
           required: false
@@ -2302,9 +2256,7 @@ paths:
           required: true
           description: ID of the Archive to process.
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
         - name: force
           in: query
           required: false
@@ -2368,9 +2320,7 @@ paths:
           required: true
           description: ID of the Archive to download.
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
         - name: path
           in: query
           required: true
@@ -2434,9 +2384,7 @@ paths:
           required: true
           description: ID of the Archive to process.
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
         - name: page
           in: path
           required: true
@@ -2455,9 +2403,7 @@ paths:
                 type: object
                 properties:
                   id:
-                    type: string
-                    minLength: 40
-                    maxLength: 40
+                    $ref: '#/components/schemas/ArchiveId'
                     description: ID of the archive updated
                   operation:
                     type: string
@@ -2524,9 +2470,7 @@ paths:
           required: true
           description: ID of the Archive to process.
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
       responses:
         '200':
           description: Successful response
@@ -2560,9 +2504,7 @@ paths:
           required: true
           description: ID of the Archive to process.
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
       responses:
         '200':
           description: Successful response
@@ -2576,9 +2518,7 @@ paths:
                   - success
                 properties:
                   id:
-                    type: string
-                    minLength: 40
-                    maxLength: 40
+                    $ref: '#/components/schemas/ArchiveId'
                     description: ID of the archive
                   operation:
                     type: string
@@ -2750,9 +2690,7 @@ paths:
           required: false
           description: ID of the category you want to restrict this search to.
           schema:
-            type: string
-            minLength: 14
-            maxLength: 14
+            $ref: '#/components/schemas/CategoryId'
         - name: filter
           in: query
           required: false
@@ -2920,9 +2858,7 @@ paths:
           required: false
           description: ID of the category you want to restrict this search to.
           schema:
-            type: string
-            minLength: 14
-            maxLength: 14
+            $ref: '#/components/schemas/CategoryId'
         - name: filter
           in: query
           required: false
@@ -3005,7 +2941,7 @@ paths:
                     type: array
                     description: Archive IDs for each search result
                     items:
-                      type: string
+                      $ref: '#/components/schemas/ArchiveId'
                   recordsFiltered:
                     type: integer
                     description: Amount of archives in the search result
@@ -3035,9 +2971,7 @@ paths:
           required: false
           description: ID of the category you want to restrict this search to.
           schema:
-            type: string
-            minLength: 14
-            maxLength: 14
+            $ref: '#/components/schemas/CategoryId'
         - name: filter
           in: query
           required: false
@@ -3822,10 +3756,8 @@ paths:
                     enum:
                       - create_category
                   category_id:
-                    type: string
                     description: ID of the created Category
-                    minLength: 14
-                    maxLength: 14
+                    $ref: '#/components/schemas/CategoryId'
                   success:
                     type: integer
                     enum:
@@ -3868,9 +3800,7 @@ paths:
                       - 1
                   category_id:
                     anyOf:
-                      - type: string
-                        minLength: 14
-                        maxLength: 14
+                      - $ref: '#/components/schemas/CategoryId'
                       - type: string
                         enum:
                           - ''
@@ -3899,9 +3829,7 @@ paths:
                   category_id:
                     description: ID of the previously linked category.
                     anyOf:
-                      - type: string
-                        minLength: 14
-                        maxLength: 14
+                      - $ref: '#/components/schemas/CategoryId'
                       - type: string
                         enum:
                           - ''
@@ -3928,9 +3856,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
-            minLength: 14
-            maxLength: 14
+            $ref: '#/components/schemas/CategoryId'
       responses:
         '200':
           description: Success response
@@ -3942,10 +3868,8 @@ paths:
                   operation:
                     type: string
                   category_id:
-                    type: string
                     description: ID of the category that was linked
-                    minLength: 14
-                    maxLength: 14
+                    $ref: '#/components/schemas/CategoryId'
                   success:
                     type: integer
                     enum:
@@ -3969,9 +3893,7 @@ paths:
         in: path
         required: true
         schema:
-          type: string
-          minLength: 14
-          maxLength: 14
+          $ref: '#/components/schemas/CategoryId'
     get:
       security: []
       operationId: getCategory
@@ -4035,9 +3957,7 @@ paths:
                     enum:
                       - update_category
                   category_id:
-                    type: string
-                    minLength: 14
-                    maxLength: 14
+                    $ref: '#/components/schemas/CategoryId'
                   success:
                     type: integer
                     enum:
@@ -4092,16 +4012,12 @@ paths:
           description: Category ID to add to.
           required: true
           schema:
-            type: string
-            minLength: 14
-            maxLength: 14
+            $ref: '#/components/schemas/CategoryId'
         - name: archive
           in: path
           required: true
           schema:
-            type: string
-            minLength: 15
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
       responses:
         '200':
           description: Result
@@ -4127,19 +4043,16 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Archive ID to remove.
+          description: Category ID to remove from.
           required: true
           schema:
-            type: string
-            minLength: 14
-            maxLength: 14
+            $ref: '#/components/schemas/CategoryId'
         - name: archive
+          description: Archive ID to remove.
           in: path
           required: true
           schema:
-            type: string
-            minLength: 15
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
       responses:
         '200':
           description: Result
@@ -4260,7 +4173,7 @@ paths:
         required: true
         description: ID of the Tankoubon desired
         schema:
-          type: string
+          $ref: '#/components/schemas/TankoubonId'
     get:
       security: []
       operationId: getTankoubon
@@ -4294,12 +4207,8 @@ paths:
                     items:
                       type: string
                       oneOf:
-                        - minLength: 40
-                          maxLength: 40
-                          pattern: "^[0-9a-f]{40}$"
-                        - minLength: 15
-                          maxLength: 15
-                          pattern: "^TANK_[0-9]{10}$"
+                        - $ref: '#/components/schemas/ArchiveId'
+                        - $ref: '#/components/schemas/TankoubonId'
                     uniqueItems: true
                   progress:
                     type: integer
@@ -4331,7 +4240,7 @@ paths:
           required: true
           description: ID of the Tankoubon to update.
           schema:
-            type: string
+            $ref: '#/components/schemas/TankoubonId'
       requestBody:
         required: true
         description: Json with 2 optional keys "archives" and "metadata"
@@ -4344,9 +4253,7 @@ paths:
                   description: Ordered array with the IDs of the archives.
                   type: array
                   items:
-                    type: string
-                    minLength: 40
-                    maxLength: 40
+                    $ref: '#/components/schemas/ArchiveId'
                 metadata:
                   description: Metadata parameters -- All are optional.
                   type: object
@@ -4417,7 +4324,7 @@ paths:
         required: true
         description: ID of the Tankoubon desired
         schema:
-          type: string
+          $ref: '#/components/schemas/TankoubonId'
     get:
       security: []
       operationId: getTankoubonFull
@@ -4467,12 +4374,8 @@ paths:
                         items:
                           type: string
                           oneOf:
-                            - minLength: 40
-                              maxLength: 40
-                              pattern: "^[0-9a-f]{40}$"
-                            - minLength: 15
-                              maxLength: 15
-                              pattern: "^TANK_[0-9]{10}$"
+                            - $ref: '#/components/schemas/ArchiveId'
+                            - $ref: '#/components/schemas/TankoubonId'
                         uniqueItems: true
                       full_data:
                         type: array
@@ -4497,7 +4400,7 @@ paths:
         required: true
         description: ID of the Tankoubon desired
         schema:
-          type: string
+          $ref: '#/components/schemas/TankoubonId'
     get:
       security: []
       operationId: getTankoubonThumbnail
@@ -4619,9 +4522,7 @@ paths:
           required: true
           description: ID of the Tankoubon to update.
           schema:
-            type: string
-            minLength: 15
-            maxLength: 15
+            $ref: '#/components/schemas/TankoubonId'
         - name: page
           in: path
           required: true
@@ -4640,9 +4541,7 @@ paths:
                 type: object
                 properties:
                   id:
-                    type: string
-                    minLength: 15
-                    maxLength: 15
+                    $ref: '#/components/schemas/TankoubonId'
                     description: ID of the tankoubon updated
                   operation:
                     type: string
@@ -4703,15 +4602,13 @@ paths:
           required: true
           description: ID of the Tankoubon to update.
           schema:
-            type: string
+            $ref: '#/components/schemas/TankoubonId'
         - name: archive
           in: path
           required: true
           description: ID of the Archive to append.
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
       responses:
         '200':
           description: Success response
@@ -4745,15 +4642,13 @@ paths:
           required: true
           description: ID of the Tankoubon to update.
           schema:
-            type: string
+            $ref: '#/components/schemas/TankoubonId'
         - name: archive
           in: path
           required: true
           description: ID of the Archive to remove.
           schema:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
       responses:
         '200':
           description: Result
@@ -5127,12 +5022,8 @@ components:
           type: string
           description: Unique identifier for the archive (40-char SHA1) or tankoubon (15-char TANK_* ID)
           oneOf:
-            - minLength: 40
-              maxLength: 40
-              pattern: "^[0-9a-f]{40}$"
-            - minLength: 15
-              maxLength: 15
-              pattern: "^TANK_[0-9]{10}$"
+            - $ref: '#/components/schemas/ArchiveId'
+            - $ref: '#/components/schemas/TankoubonId'
         title:
           type: string
           description: Title of the archive
@@ -5201,17 +5092,11 @@ components:
           items:
             type: string
             oneOf:
-              - minLength: 40
-                maxLength: 40
-                pattern: "^[0-9a-f]{40}$"
-              - minLength: 15
-                maxLength: 15
-                pattern: "^TANK_[0-9]{10}$"
+              - $ref: '#/components/schemas/ArchiveId'
+              - $ref: '#/components/schemas/TankoubonId'
         id:
-          type: string
           description: ID of the category
-          minLength: 14
-          maxLength: 14
+          $ref: '#/components/schemas/CategoryId'
         name:
           type: string
           description: Name of the category
@@ -5239,7 +5124,7 @@ components:
         - id
       properties:
         id:
-          type: string
+          $ref: '#/components/schemas/TankoubonId'
           description: ID of the tankoubon
         name:
           type: string
@@ -5254,9 +5139,7 @@ components:
           type: array
           description: Array of archive IDs
           items:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
         progress:
           type: integer
           description: Reading progress (page number) for this Tankoubon
@@ -5267,7 +5150,7 @@ components:
         tags: ""
         archives:
           - e69e43e1355267f7d32a4f9b7f2fe108d2401ebf
-          - e69e43e1355267f7d32a4f9b7f2fe108d2401ebg
+          - e69e43e1355267f7d32a4f9b7f2fe108d2401eba
         progress: 0
     TankoubonBackupJson:
       type: object
@@ -5276,7 +5159,7 @@ components:
         - tankid
       properties:
         tankid:
-          type: string
+          $ref: '#/components/schemas/TankoubonId'
           description: ID of the tankoubon
         name:
           type: string
@@ -5291,15 +5174,13 @@ components:
           type: array
           description: Array of archive IDs
           items:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
       example:
         tankid: TANK_1749925516
         name: sailor moon
         archives:
           - e69e43e1355267f7d32a4f9b7f2fe108d2401ebf
-          - e69e43e1355267f7d32a4f9b7f2fe108d2401ebg
+          - e69e43e1355267f7d32a4f9b7f2fe108d2401eba
     BackupArchiveMetadataJson:
       type: object
       description: JSON object for archive metadata in as returned in a backup
@@ -5311,9 +5192,7 @@ components:
         - filename
       properties:
         arcid:
-          type: string
-          minLength: 40
-          maxLength: 40
+          $ref: '#/components/schemas/ArchiveId'
           description: Unique identifier for the archive
         title:
           type: string
@@ -5343,14 +5222,10 @@ components:
           type: array
           description: Array of archive IDs
           items:
-            type: string
-            minLength: 40
-            maxLength: 40
+            $ref: '#/components/schemas/ArchiveId'
         catid:
-          type: string
           description: ID of the category
-          minLength: 14
-          maxLength: 14
+          $ref: '#/components/schemas/CategoryId'
         name:
           type: string
           description: Name of the category
@@ -5383,6 +5258,27 @@ components:
           type: array
           items:
             type: string
+    ArchiveId:
+      type: string
+      minLength: 40
+      maxLength: 40
+      pattern: "^[0-9a-f]{40}$"
+      description: Unique identifier for an archive (40-char SHA1)
+      example: "d07ff399dddb25a0408385bc75b9ba52709fe2c1"
+    TankoubonId:
+      type: string
+      minLength: 15
+      maxLength: 15
+      pattern: "^TANK_[0-9]{10}$"
+      description: Unique identifier for a tankoubon (15-char TANK_* ID)
+      example: "TANK_1749925516"
+    CategoryId:
+      type: string
+      minLength: 14
+      maxLength: 14
+      pattern: "^SET_[0-9]{10}$"
+      description: Unique identifier for a category (14-char SET_* ID)
+      example: "SET_1613080290"
     RegistryMetadata:
       type: object
       description: Registry configuration with ID.
