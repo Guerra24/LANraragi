@@ -174,8 +174,8 @@ sub enable_devmode {
 
 sub get_password {
 
-    #bcrypt hash for "kamimamita"
-    return &get_redis_conf( "password", '{CRYPT}$2a$08$4AcMwwkGXnWtFTOLuw/hduQlRdqWQIBzX3UuKn.M1qTFX5R4CALxy' );
+    # Argon2 hash for "kamimamita"
+    return &get_redis_conf( "password", '$argon2id$v=19$m=262144,t=3,p=1$n7NpJVTbkkNi5OrZ++otag$/0tumMm8ucd5T8ItzDLFuSusXiLSDqchtzmIioRsG+Q' );
 }
 
 sub get_tagrules {
