@@ -232,8 +232,8 @@ sub delete_registry {
         return ( 500, "Redis error while deleting registry." );
     }
 
-    if ( ( $redis->hget( 'LRR_CONFIG', 'ougi' ) || "" ) eq $registry_id ) {
-        $redis->hdel( 'LRR_CONFIG', 'ougi' );
+    if ( ( $redis->hget( 'LRR_CONFIG', 'default_registry' ) || "" ) eq $registry_id ) {
+        $redis->hdel( 'LRR_CONFIG', 'default_registry' );
         $logger->info("Cleared default-registry pointer that referenced deleted '$registry_id'.");
     }
 
@@ -243,26 +243,26 @@ sub delete_registry {
 }
 
 # Get the configured default registry id, or empty string if unset.
-sub get_ougi {
+sub get_default_registry {
     my ($redis) = @_;
-    return $redis->hget( 'LRR_CONFIG', 'ougi' ) || "";
+    return $redis->hget( 'LRR_CONFIG', 'default_registry' ) || "";
 }
 
 # Set the configured default registry to $registry_id.
 # Returns ( $status_code, $registry_id, $message ).
-sub update_ougi {
+sub update_default_registry {
     my ( $registry_id, $redis ) = @_;
     my ( $registry, $lookup_status, $lookup_error ) = get_registry( $registry_id, $redis );
     return ( $lookup_status, $registry_id, $lookup_error ) unless $registry;
-    $redis->hset( 'LRR_CONFIG', 'ougi', $registry_id );
+    $redis->hset( 'LRR_CONFIG', 'default_registry', $registry_id );
     return ( 200, $registry_id, "success" );
 }
 
 # Clear the configured default registry. Returns the previously-set id (empty string if unset).
-sub remove_ougi {
+sub remove_default_registry {
     my ($redis) = @_;
-    my $registry_id = $redis->hget( 'LRR_CONFIG', 'ougi' ) || "";
-    $redis->hdel( 'LRR_CONFIG', 'ougi' );
+    my $registry_id = $redis->hget( 'LRR_CONFIG', 'default_registry' ) || "";
+    $redis->hdel( 'LRR_CONFIG', 'default_registry' );
     return $registry_id;
 }
 
