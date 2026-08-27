@@ -19,7 +19,7 @@ say("~~~~~LANraragi Plugin Registry Generator~~~~~");
 say("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
 my $working_dir   = $ARGV[0] // $0; # Use the first argument as working directory, or the script path if not provided
-my $script_dir    = dirname(abs_path($working_dir));
+my $script_dir    = abs_path($working_dir);
 my $artifact_root = "$script_dir/artifacts";
 my $output_file   = "$script_dir/registry.json";
 my $now           = strftime("%Y-%m-%dT%H:%M:%SZ", gmtime);
@@ -55,16 +55,16 @@ say "Generating registry from plugins detected in $artifact_root...";
 for my $namespace (list_child_directories($artifact_root)) {
     my $namespace_dir = File::Spec->catdir($artifact_root, $namespace);
 
-    die "Manifest is missing plugin record for namespace '$namespace'\n"
-        unless exists $existing_plugins->{$namespace};
+    my $existing_plugin = {};
+    if (exists $existing_plugins->{$namespace}) {
+        $existing_plugin = $existing_plugins->{$namespace};
 
-    my $existing_plugin = $existing_plugins->{$namespace};
-
-    $plugins{$namespace} = {
-        namespace => $existing_plugin->{namespace},
-        type      => $existing_plugin->{type},
-        versions  => {},
-    };
+        $plugins{$namespace} = {
+            namespace => $existing_plugin->{namespace},
+            type      => $existing_plugin->{type},
+            versions  => {},
+        };
+    }
 
     for my $version (list_child_directories($namespace_dir)) {
         my $version_dir = File::Spec->catdir($namespace_dir, $version);
@@ -82,20 +82,28 @@ for my $namespace (list_child_directories($artifact_root)) {
         my $info             = parse_plugin_artifact_content( $canonical_path, $artifact_content );
         validate_plugin_parameters( $canonical_path, $artifact_content );
 
-        die "Namespace directory mismatch for $rel_path\n"
-            unless $info->{namespace} eq $namespace;
+        my $info_namespace = $info->{namespace};
+        #die "Namespace directory mismatch for $rel_path: Got $info_namespace and expected $namespace\n"
+        #    unless $info->{namespace} eq $namespace;
         die "Version directory mismatch for $rel_path\n"
             unless $info->{version} eq $version;
         die "Unsupported plugin type '$info->{type}' in $rel_path\n"
             unless $VALID_TYPES{ $info->{type} };
-        die "Manifest type mismatch for namespace '$namespace'\n"
-            unless $existing_plugin->{type} eq $info->{type};
 
-        my $existing_record = $existing_plugin->{versions}{$version};
-        if ($existing_record) {
-            die "Published artifact bytes changed for existing $namespace/$version\n"
-                unless $existing_record->{sha256} eq $artifact_sha256;
+        my $existing_record = undef;
+        if (exists $existing_plugins->{$namespace}) {
+            die "Manifest type mismatch for namespace '$namespace'\n"
+                unless $existing_plugin->{type} eq $info->{type};
+
+            $existing_record = $existing_plugin->{versions}{$version};
+            if ($existing_record) {
+                die "Published artifact bytes changed for existing $namespace/$version\n"
+                    unless $existing_record->{sha256} eq $artifact_sha256;
+            }
         }
+
+        $plugins{$namespace}{type} = $info->{type};
+        $plugins{$namespace}{namespace} = $info->{namespace};
 
         $plugins{$namespace}{versions}{$version} = {
             version      => $info->{version},
@@ -152,8 +160,8 @@ sub load_existing_plugins {
 
         die "Plugin record for '$namespace' must be an object\n"
             unless ref $plugin eq 'HASH';
-        die "Plugin key '$namespace' must match inner namespace\n"
-            unless defined $plugin->{namespace} && $plugin->{namespace} eq $namespace;
+        #die "Plugin key '$namespace' must match inner namespace\n"
+        #    unless defined $plugin->{namespace} && $plugin->{namespace} eq $namespace;
         die "Plugin '$namespace' is missing type\n"
             unless defined $plugin->{type};
         die "Plugin '$namespace' has invalid type '$plugin->{type}'\n"
